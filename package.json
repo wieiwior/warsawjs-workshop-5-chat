@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "db:clearWindows": "DEL .\"\\db\\chat_users.db\"",
+    "db:clearLinux": "rm -f ./db/chat_users.db",
+    "db:bootstrap": "knex migrate:latest --env production",
+    "db:rebuildWindows": "npm run db:clearWindows && npm run db:bootstrap",
+    "db:rebuildLinux": "npm run db:clearLinux && npm run db:bootstrap"
+
   },
   "repository": {
     "type": "git",
@@ -18,6 +23,7 @@
   "homepage": "https://github.com/wieiwior/warsawjs-workshop-5-chat#readme",
   "dependencies": {
     "knex": "''0.12.9",
+    "sha.js": "^2.4.8",
     "socket.io": "''1.7.3",
     "socket.io-client": "''1.7.3",
     "sqlite3": "''3.1.8"
