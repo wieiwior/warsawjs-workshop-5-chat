@@ -9,13 +9,13 @@ function clearPrompt() {
     process.stdout.clearLine();
 }
 
-function messageHandler(data) {
+function handleMessage(data) {
     clearPrompt();
     console.log(`data from server: ${data}`);
     readLine.prompt();
 }
 
-function loginHandler(userName) {
+function handleLogin(userName) {
     clearPrompt();
     if (userName) {
         LOGGED_USER_NAME = userName;
@@ -26,7 +26,7 @@ function loginHandler(userName) {
     readLine.prompt();
 }
 
-function registerHandler(isAlreadyRregistered){
+function handleRegister(isAlreadyRregistered){
     clearPrompt();
     if (isAlreadyRregistered) {
         console.log('> Registration failed');
@@ -36,7 +36,7 @@ function registerHandler(isAlreadyRregistered){
     readLine.prompt();
 }
 
-function cmdLineHandler(data) {
+function handleCmdLine(data) {
     const lineArgs = data.split(/\s+/);
     const firstWord = lineArgs[0];
     if (firstWord === '/exit') {
@@ -68,13 +68,13 @@ function cmdLineHandler(data) {
     readLine.prompt();
 }
 
-client.on('message', messageHandler);
+client.on('message', handleMessage);
 
-client.on('login', loginHandler);
+client.on('login', handleLogin);
 
-client.on('register', registerHandler);
+client.on('register', handleRegister);
 
-readLine.on('line', cmdLineHandler);
+readLine.on('line', handleCmdLine);
 
 emitEvent = (eventName, data) => {
     client.emit(eventName, data);
