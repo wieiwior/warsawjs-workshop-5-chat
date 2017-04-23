@@ -17,7 +17,7 @@ client.on('message', (data) => {
 
 client.on('login', (userName) => {
     clearPrompt();
-    if(userName){
+    if (userName) {
         LOGGED_USER_NAME = userName;
         readLine.setPrompt(`${userName}: `)
     } else {
@@ -28,7 +28,7 @@ client.on('login', (userName) => {
 
 client.on('register', (isAlreadyRregistered) => {
     clearPrompt();
-    if(isAlreadyRregistered){
+    if (isAlreadyRregistered) {
         console.log('> Registration failed');
     } else {
         console.log('> Registration successful');
@@ -62,16 +62,11 @@ readLine.on('line', (data) => {
             LOGGED_USER_NAME = '';
         }
         readLine.setPrompt('> ');
-    }
-
-
-
-    else if (data.trim()) {
+    } else if (data.trim()) {
         emitEvent('message', data);
     }
     readLine.prompt();
 });
-
 
 emitEvent = (eventName, data) => {
     client.emit(eventName, data);

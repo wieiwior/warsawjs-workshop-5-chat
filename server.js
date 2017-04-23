@@ -10,7 +10,7 @@ server.on('connection', (client) => {
     });
 
     client.on('register', (userObject) => {
-        if(USERS[userObject.userName]){
+        if (USERS[userObject.userName]) {
             client.emit('register', true);
         } else {
             USERS[userObject.userName] = {logged_in: false, password: userObject.password};
@@ -21,7 +21,7 @@ server.on('connection', (client) => {
 
     client.on('login', (userObject) => {
         const user = USERS[userObject.userName];
-        if(user.password === userObject.password){
+        if (user.password === userObject.password) {
             user.logged_in = true;
             client.emit('login', userObject.userName);
         } else {
@@ -30,11 +30,10 @@ server.on('connection', (client) => {
     });
 
     client.on('logout', (userName) => {
-       const user = USERS[userName];
-       if(user){
-           user.logged_in = false;
-       }
-
+        const user = USERS[userName];
+        if (user) {
+            user.logged_in = false;
+        }
     });
 });
 
