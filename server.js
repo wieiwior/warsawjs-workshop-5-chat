@@ -9,9 +9,14 @@ server.on('connection', (client) => {
         client.broadcast.emit('message', msg);
     });
 
-    client.on('register', (user) => {
-        USERS[user.userName] = {logged_in: false, password: user.password};
-        console.log(`Client registered: ${user.userName}`);
+    client.on('register', (userObject) => {
+        if(USERS[userObject.userName]){
+            client.emit('register', true);
+        } else {
+            USERS[userObject.userName] = {logged_in: false, password: userObject.password};
+            console.log(`Client registered: ${userObject.userName}`);
+            client.emit('register', false);
+        }
     });
 
     client.on('login', (userObject) => {
@@ -22,6 +27,14 @@ server.on('connection', (client) => {
         } else {
             client.emit('login', '');
         }
+    });
+
+    client.on('logout', (userName) => {
+       const user = USERS[userName];
+       if(user){
+           user.logged_in = false;
+       }
+
     });
 });
 
