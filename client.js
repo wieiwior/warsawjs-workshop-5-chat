@@ -9,16 +9,48 @@ function clearPrompt() {
 }
 client.on('message', (data) => {
         clearPrompt();
-        console.log(`data from server ${data}`);
         readLine.prompt();
     }
 );
 
-readLine.on('line', (data) => {
-    if(data.trim()){
-        client.emit('message', data);
+client.on('login', (userName) => {
+    clearPrompt();
+    if(userName){
+        readLine.setPrompt(`${userName}: `)
+    } else {
+        console.log('> Login failed');
     }
     readLine.prompt();
 });
+readLine.on('line', (data) => {
+    const lineArgs = data.split(/\s+/);
+    const firstWord = lineArgs[0];
+    if (firstWord === '/exit') {
+        readLine.close();
+        process.exit();
+    } else if (firstWord === '/register') {
+        if (lineArgs.length >= 3) {
+            emitEvent('register', {
+                userName: lineArgs[1],
+                password: lineArgs[2]
+            });
+        }
+    } else if (firstWord === '/login') {
+        if (lineArgs.length >= 3) {
+            emitEvent('login', {
+                userName: lineArgs[1],
+                password: lineArgs[2]
+            });
+        }
+    } else if (data.trim()) {
+        emitEvent('message', data);
+    }
+    readLine.prompt();
+});
+
+
+emitEvent = (eventName, data) => {
+    client.emit(eventName, data);
+};
 
 readLine.prompt();
