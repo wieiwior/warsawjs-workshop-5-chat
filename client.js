@@ -1,7 +1,7 @@
 const io = require('socket.io-client');
 const readLine = require('readline').createInterface({input: process.stdin, output: process.stdout});
 
-const client = io('http://localhost:3000');
+const client = io(`http://${process.argv[2] || 'localhost'}:3000`);
 
 function clearPrompt() {
     process.stdout.cursorTo(0);
