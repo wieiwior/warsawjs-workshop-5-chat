@@ -8,14 +8,14 @@ function clearPrompt() {
     process.stdout.cursorTo(0);
     process.stdout.clearLine();
 }
-client.on('message', (data) => {
-        clearPrompt();
-        console.log(`data from server: ${data}`);
-        readLine.prompt();
-    }
-);
 
-client.on('login', (userName) => {
+function messageHandler(data) {
+    clearPrompt();
+    console.log(`data from server: ${data}`);
+    readLine.prompt();
+}
+
+function loginHandler(userName) {
     clearPrompt();
     if (userName) {
         LOGGED_USER_NAME = userName;
@@ -24,9 +24,9 @@ client.on('login', (userName) => {
         console.log('> Login failed');
     }
     readLine.prompt();
-});
+}
 
-client.on('register', (isAlreadyRregistered) => {
+function registerHandler(isAlreadyRregistered){
     clearPrompt();
     if (isAlreadyRregistered) {
         console.log('> Registration failed');
@@ -34,9 +34,9 @@ client.on('register', (isAlreadyRregistered) => {
         console.log('> Registration successful');
     }
     readLine.prompt();
-});
+}
 
-readLine.on('line', (data) => {
+function cmdLineHandler(data) {
     const lineArgs = data.split(/\s+/);
     const firstWord = lineArgs[0];
     if (firstWord === '/exit') {
@@ -66,7 +66,15 @@ readLine.on('line', (data) => {
         emitEvent('message', data);
     }
     readLine.prompt();
-});
+}
+
+client.on('message', messageHandler);
+
+client.on('login', loginHandler);
+
+client.on('register', registerHandler);
+
+readLine.on('line', cmdLineHandler);
 
 emitEvent = (eventName, data) => {
     client.emit(eventName, data);
