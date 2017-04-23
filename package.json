@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/wieiwior/warsawjs-workshop-5-chat/issues"
   },
-  "homepage": "https://github.com/wieiwior/warsawjs-workshop-5-chat#readme"
+  "homepage": "https://github.com/wieiwior/warsawjs-workshop-5-chat#readme",
+  "dependencies": {
+      "socket.io": "''1.7.3",
+      "socket.io-client": "''1.7.3"
+  }
 }
