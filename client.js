@@ -7,6 +7,7 @@ client.on('message', (data) => console.log(`data from server ${data}`));
 
 readLine.on('line', (data) => {
     client.emit('message', data);
+    readLine.prompt();
 });
 
 readLine.prompt();
