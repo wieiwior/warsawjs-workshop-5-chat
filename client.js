@@ -3,10 +3,21 @@ const readLine = require('readline').createInterface({input: process.stdin, outp
 
 const client = io('http://localhost:3000');
 
-client.on('message', (data) => console.log(`data from server ${data}`));
+function clearPrompt() {
+    process.stdout.cursorTo(0);
+    process.stdout.clearLine();
+}
+client.on('message', (data) => {
+        clearPrompt();
+        console.log(`data from server ${data}`);
+        readLine.prompt();
+    }
+);
 
 readLine.on('line', (data) => {
-    client.emit('message', data);
+    if(data.trim()){
+        client.emit('message', data);
+    }
     readLine.prompt();
 });
 
